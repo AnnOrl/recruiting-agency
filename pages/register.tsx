@@ -4,25 +4,31 @@ import { LoginForm } from '../components/LoginForm/LoginForm';
 import { useRouter } from 'next/router';
 import HttpStatus from 'http-status-codes';
 
-// { username: 'test-user', password: 'my-password' }
-const Login = () => {
-	const [ formData, setFormData ] = useState({ username: '', password: '' });
+const Register = () => {
+	const [ formData, setFormData ] = useState({
+		username: '',
+		password: '',
+		confirmPassword: '',
+		email: '',
+		name: ''
+	});
 	const [ error, setError ] = useState({});
 	const router = useRouter();
 	const handleSubmit = useCallback(
 		() => {
 			let xhr = new XMLHttpRequest();
-			xhr.open('post', '/api/login');
+			xhr.open('post', '/api/users');
 			xhr.setRequestHeader('Content-type', 'application/json');
-			xhr.send(JSON.stringify(formData));
+			const { confirmPassword, ...data } = formData;
+			xhr.send(JSON.stringify(data));
 			xhr.onload = function() {
 				if (xhr.status === HttpStatus.OK) {
-					router.push('/');
+					router.push('/login');
 				} else {
-					setFormData({ username: '', password: '' });
+					setFormData({ username: '', password: '', confirmPassword: '', email: '', name: '' });
 					setError({
-						header: 'Ошибка входа',
-						content: JSON.parse(xhr.response)?.error || HttpStatus.getStatusText(xhr.status)
+						header: 'Ошибка регистрации',
+						content: JSON.parse(xhr.response).error || HttpStatus.getStatusText(xhr.status)
 					});
 				}
 			};
@@ -38,7 +44,7 @@ const Login = () => {
 		[ formData ]
 	);
 
-	return <LoginForm onSubmit={handleSubmit} onChange={handleChange} formData={formData} error={error} />;
+	return <LoginForm onSubmit={handleSubmit} onChange={handleChange} formData={formData} error={error} register />;
 };
 
-export default withAppLayout()(Login);
+export default withAppLayout()(Register);

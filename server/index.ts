@@ -1,12 +1,22 @@
 import 'reflect-metadata';
-
+import passport from 'passport';
 import express from 'express';
-import { Request, Response } from 'express';
+import session from 'express-session';
 import bodyParser from 'body-parser';
 import { createConnection } from 'typeorm';
+import redis from 'redis';
+import connectRedis from 'connect-redis';
+import cookieSession from 'cookie-session';
+import cookieParser from 'cookie-parser';
 import next from 'next';
 import { Users } from './entity/Users';
+import { config } from './config';
+import { initPassport } from './auth/authentication';
+import { initUsers } from './routes/users';
+import { initLogin } from './routes/login';
 
+const redisClient = redis.createClient();
+const RedisStore = connectRedis(session);
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
@@ -28,20 +38,43 @@ app
 		})
 	)
 	.then((connection) => {
-		console.log('!!!!!', connection);
-		const userRepository = connection.getRepository(Users);
-
 		// create and setup express app
 		const server = express();
+		server.use(
+			bodyParser.urlencoded({
+				extended: true
+			})
+		);
 		server.use(bodyParser.json());
+		server.use(cookieParser());
+		server.use(
+			cookieSession({
+				name: 'session',
+				keys: [ 'session' ]
+			})
+		);
 
-		// register routes
+		initPassport(connection);
+		server.use(
+			session({
+				store: new RedisStore({
+					client: redisClient,
+					url: config.redisStore.url
+				}),
+				secret: config.redisStore.secret,
+				resave: false,
+				saveUninitialized: false
+			})
+		);
 
-		server.get('/api/users', async function(_req: Request, res: Response) {
-			const users = await userRepository.find();
-			res.json(users);
-		});
+		server.use(passport.initialize());
+		server.use(passport.session());
 
+		initLogin(server);
+		initUsers(server, connection.getRepository(Users));
+
+		server.all('/', passport.redirectMiddleware, (req, res) => handle(req, res));
+		server.all('/login', (req, res) => handle(req, res));
 		server.all('*', (req, res) => {
 			return handle(req, res);
 		});
