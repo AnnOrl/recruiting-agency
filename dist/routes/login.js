@@ -24,7 +24,7 @@ const initLogin = (app) => {
                         error: err
                     });
                 }
-                res.status(http_status_codes_1.default.OK).send();
+                res.status(http_status_codes_1.default.OK).send({ user });
                 return next();
             });
         })(req, res, next);

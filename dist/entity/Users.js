@@ -24,7 +24,8 @@ __decorate([
 ], Users.prototype, "email", void 0);
 __decorate([
     typeorm_1.Column({
-        length: 20
+        length: 20,
+        unique: true
     }),
     __metadata("design:type", String)
 ], Users.prototype, "login", void 0);
@@ -40,6 +41,10 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], Users.prototype, "name", void 0);
+__decorate([
+    typeorm_1.Column(),
+    __metadata("design:type", Number)
+], Users.prototype, "role", void 0);
 Users = __decorate([
     typeorm_1.Entity()
 ], Users);

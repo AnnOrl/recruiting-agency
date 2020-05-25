@@ -1,5 +1,6 @@
 import { Request, Response, Express } from 'express';
 import bcrypt from 'bcrypt';
+import passport from 'passport';
 import { Users } from '../entity/Users';
 import HttpStatus from 'http-status-codes';
 
@@ -12,23 +13,28 @@ const generatePassword = (password) => {
 };
 
 const initUsers = (app: Express, userRepository) => {
-	app.get('/api/users', async function(req: Request, res: Response) {
+	app.get('/api/users', passport.authenticationMiddleware, async function(req: Request, res: Response) {
 		const users = await userRepository.find();
 		res.json(users);
 	});
 
-	app.get('/api/users/:id', async function(req: Request, res: Response) {
+	app.get('/api/users-current', passport.authenticationMiddleware, function(req: any, res: Response) {
+		res.json({ user: req.user });
+	});
+
+	app.get('/api/users/:id', passport.authenticationMiddleware, async function(req: Request, res: Response) {
 		const results = await userRepository.findOne(req.params.id);
 		return res.send(results);
 	});
 
 	app.post('/api/users', async function(req: Request, res: Response) {
 		try {
-			const { password, username, email, name } = req.body;
+			const { password, username, email, name, role } = req.body;
 			const user = await userRepository.create({
 				login: username,
 				email,
 				name,
+				role,
 				passwordHash: generatePassword(password)
 			});
 			const results = await userRepository.save(user);
@@ -38,7 +44,7 @@ const initUsers = (app: Express, userRepository) => {
 		}
 	});
 
-	app.put('/api/users/:id', async function(req: Request, res: Response) {
+	app.put('/api/users/:id', passport.authenticationMiddleware, async function(req: Request, res: Response) {
 		const user = await userRepository.findOne(req.params.id);
 		const { password, ...userData } = req.body;
 		userRepository.merge(user, { ...userData, ...password ? generatePassword(password) : {} });
@@ -46,7 +52,7 @@ const initUsers = (app: Express, userRepository) => {
 		return res.send(results);
 	});
 
-	app.delete('/api/users/:id', async function(req: Request, res: Response) {
+	app.delete('/api/users/:id', passport.authenticationMiddleware, async function(req: Request, res: Response) {
 		const results = await userRepository.delete(req.params.id);
 		return res.send(results);
 	});

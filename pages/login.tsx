@@ -2,30 +2,32 @@ import React, { useCallback, useState } from 'react';
 import withAppLayout from '../components/AppLayout/Layout';
 import { LoginForm } from '../components/LoginForm/LoginForm';
 import { useRouter } from 'next/router';
-import HttpStatus from 'http-status-codes';
+import { setCurrentUser } from '../redux/actions';
+import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
+import withRedux from 'next-redux-wrapper';
 
 // { username: 'test-user', password: 'my-password' }
 const Login = () => {
 	const [ formData, setFormData ] = useState({ username: '', password: '' });
 	const [ error, setError ] = useState({});
 	const router = useRouter();
+	const dispatch = useDispatch();
 	const handleSubmit = useCallback(
 		() => {
-			let xhr = new XMLHttpRequest();
-			xhr.open('post', '/api/login');
-			xhr.setRequestHeader('Content-type', 'application/json');
-			xhr.send(JSON.stringify(formData));
-			xhr.onload = function() {
-				if (xhr.status === HttpStatus.OK) {
+			axios
+				.post('/api/login', formData)
+				.then(({ data }) => {
+					dispatch(setCurrentUser(data.user));
 					router.push('/');
-				} else {
+				})
+				.catch(() => {
 					setFormData({ username: '', password: '' });
 					setError({
 						header: 'Ошибка входа',
-						content: JSON.parse(xhr.response)?.error || HttpStatus.getStatusText(xhr.status)
+						content: 'Пользователь не найдет, возможно неверно введен логин или пароль'
 					});
-				}
-			};
+				});
 		},
 		[ formData ]
 	);
@@ -41,4 +43,4 @@ const Login = () => {
 	return <LoginForm onSubmit={handleSubmit} onChange={handleChange} formData={formData} error={error} />;
 };
 
-export default withAppLayout()(Login);
+export default Login;

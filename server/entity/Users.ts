@@ -10,7 +10,8 @@ export class Users extends BaseEntity {
 	email: string;
 
 	@Column({
-		length: 20
+		length: 20,
+		unique: true
 	})
 	login: string;
 
@@ -23,4 +24,6 @@ export class Users extends BaseEntity {
 		length: 200
 	})
 	name: string;
+
+	@Column() role: number;
 }

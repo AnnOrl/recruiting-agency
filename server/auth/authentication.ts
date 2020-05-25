@@ -34,6 +34,7 @@ const initPassport = (connection) => {
 						if (!isValid) {
 							return done(null, false);
 						}
+						passport.user = user;
 						return done(null, user);
 					});
 				} catch (e) {

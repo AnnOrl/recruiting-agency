@@ -1,37 +1,48 @@
 import React, { useCallback, useState } from 'react';
 import withAppLayout from '../components/AppLayout/Layout';
-import { LoginForm } from '../components/LoginForm/LoginForm';
+import { RegisterForm } from '../components/LoginForm/RegisterForm';
 import { useRouter } from 'next/router';
-import HttpStatus from 'http-status-codes';
+import axios from 'axios';
+
+const gen_password = () => {
+	return Math.random().toString(36).slice(1);
+};
 
 const Register = () => {
 	const [ formData, setFormData ] = useState({
 		username: '',
 		password: '',
-		confirmPassword: '',
 		email: '',
-		name: ''
+		name: '',
+		role: 1
 	});
 	const [ error, setError ] = useState({});
+	const [ success, setSuccess ] = useState({});
 	const router = useRouter();
 	const handleSubmit = useCallback(
 		() => {
-			let xhr = new XMLHttpRequest();
-			xhr.open('post', '/api/users');
-			xhr.setRequestHeader('Content-type', 'application/json');
-			const { confirmPassword, ...data } = formData;
-			xhr.send(JSON.stringify(data));
-			xhr.onload = function() {
-				if (xhr.status === HttpStatus.OK) {
-					router.push('/login');
-				} else {
-					setFormData({ username: '', password: '', confirmPassword: '', email: '', name: '' });
+			axios
+				.post('/api/users', formData)
+				.then(({data}) => {
+					setSuccess({
+						header: 'Пользователь создан',
+						content: <div>
+							<p>Логин: {data.login}</p>
+							<p>Пароль: {formData.password}</p>
+						</div>,
+					})
+					setFormData({ username: '', password: '', email: '', name: '', role: 1 });
+				})
+				.catch(({ response }) => {
+					setFormData({ username: '', password: '', email: '', name: '', role: 1 });
 					setError({
 						header: 'Ошибка регистрации',
-						content: JSON.parse(xhr.response).error || HttpStatus.getStatusText(xhr.status)
+						content:
+						response?.data?.error?.code === 'ER_DUP_ENTRY'
+								? 'Пользователь с таким логином существует'
+								: 'При регистрации произошла ошибка, попробуйте позднее'
 					});
-				}
-			};
+				});
 		},
 		[ formData ]
 	);
@@ -39,12 +50,18 @@ const Register = () => {
 	const handleChange = useCallback(
 		(e, { name, value }) => {
 			setError({});
-			setFormData({ ...formData, [name]: value });
+			const newFormData = { ...formData, [name]: value };
+
+			if (name === 'email') {
+				newFormData.username = value.split('@')[0];
+				newFormData.password = newFormData.password || gen_password();
+			}
+			setFormData(newFormData);
 		},
 		[ formData ]
 	);
 
-	return <LoginForm onSubmit={handleSubmit} onChange={handleChange} formData={formData} error={error} register />;
+	return <RegisterForm onSubmit={handleSubmit} onChange={handleChange} formData={formData} error={error} success={success}/>;
 };
 
 export default withAppLayout()(Register);

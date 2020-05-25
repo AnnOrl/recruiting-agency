@@ -33,6 +33,7 @@ const initPassport = (connection) => {
                 if (!isValid) {
                     return done(null, false);
                 }
+                passport_1.default.user = user;
                 return done(null, user);
             });
         }

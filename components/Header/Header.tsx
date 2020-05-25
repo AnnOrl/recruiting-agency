@@ -1,33 +1,50 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Menu } from 'semantic-ui-react';
 import HttpStatus from 'http-status-codes';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
+import axios from 'axios';
+import { Roles } from '../../const';
+import { useSelector, useDispatch } from 'react-redux';
+
+const menu = [
+	{ link: '/', name: 'В работе' },
+	{ link: '/meetings', name: 'Встречи' },
+	{ link: '/calendar', name: 'Календарь' },
+	{ link: '/seekers', name: 'Соискатели' },
+	{ link: '/jobs', name: 'Вакансии' },
+	{ link: '/customers', name: 'Клиенты', role: Roles.FULL },
+	{ link: '/register', name: 'Регистрация пользователей', role: Roles.FULL }
+];
 
 const Header = () => {
 	const router = useRouter();
-	const onClick = useCallback(() => {
-		let xhr = new XMLHttpRequest();
-		xhr.open('get', '/api/logout');
-		xhr.setRequestHeader('Content-type', 'application/json');
-		xhr.send();
+	const user = useSelector((state) => state.user) || {};
 
-		xhr.onload = () => {
-			if (xhr.status === HttpStatus.OK) {
-				router.push('/login');
-			}
-		};
+	const handleLogout = useCallback(() => {
+		axios.get('/api/logout').then(() => {
+			router.push('/login');
+		});
 	}, []);
+
 	return (
 		<Menu stackable>
-			<Menu.Item>
-				<img src="/logo.png" />
-			</Menu.Item>
+			<Link href="/">
+				<Menu.Item>
+					<img src="/logo.png" />
+				</Menu.Item>
+			</Link>
 
-			<Menu.Item name="features">В работе</Menu.Item>
+			{menu.map(({ link, name, role }) => {
+				return !role || !user.role || role === user.role ? (
+					<Link href={link} key={link}>
+						<Menu.Item active={router.pathname === link}>{name}</Menu.Item>
+					</Link>
+				) : null;
+			})}
 
-			<Menu.Item name="testimonials">Календарь</Menu.Item>
 			<Menu.Menu position="right">
-				<Menu.Item name="sign-in" onClick={onClick}>
+				<Menu.Item name="sign-in" onClick={handleLogout}>
 					Выйти
 				</Menu.Item>
 			</Menu.Menu>
