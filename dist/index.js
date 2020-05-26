@@ -67,7 +67,7 @@ app
     server.use(passport_1.default.session());
     login_1.initLogin(server);
     users_1.initUsers(server, connection.getRepository(Users_1.Users));
-    customers_1.initCustomers(server, connection.getRepository(Customers_1.Customers));
+    customers_1.initCustomers(server, connection.getRepository(Customers_1.Customers), connection.getRepository(CustomerRepresentatives_1.CustomerRepresentatives));
     server.all('/', passport_1.default.redirectMiddleware, (req, res) => handle(req, res));
     server.all('/login', (req, res) => handle(req, res));
     server.all('*', (req, res) => {

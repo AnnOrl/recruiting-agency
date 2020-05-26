@@ -31,7 +31,16 @@ __decorate([
     __metadata("design:type", String)
 ], CustomerRepresentatives.prototype, "phone", void 0);
 __decorate([
-    typeorm_1.ManyToOne((type) => Customers_1.Customers, (customer) => customer.customerRepresentatives),
+    typeorm_1.Column({
+        length: 255,
+        nullable: true
+    }),
+    __metadata("design:type", String)
+], CustomerRepresentatives.prototype, "email", void 0);
+__decorate([
+    typeorm_1.ManyToOne((type) => Customers_1.Customers, (customer) => customer.customerRepresentatives, {
+        onDelete: 'CASCADE'
+    }),
     __metadata("design:type", Customers_1.Customers)
 ], CustomerRepresentatives.prototype, "customer", void 0);
 CustomerRepresentatives = __decorate([

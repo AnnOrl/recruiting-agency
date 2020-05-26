@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import withAppLayout from '../components/AppLayout/Layout';
+import dataLayout from '../components/Layouts/DataLayout';
 import { RegisterForm } from '../components/Forms/RegisterForm';
 import { useRouter } from 'next/router';
 import axios from 'axios';
@@ -64,4 +64,4 @@ const Register = () => {
 	return <RegisterForm onSubmit={handleSubmit} onChange={handleChange} formData={formData} error={error} success={success}/>;
 };
 
-export default withAppLayout()(Register);
+export default dataLayout()(Register);

@@ -101,7 +101,9 @@ __decorate([
     __metadata("design:type", String)
 ], Customers.prototype, "comments", void 0);
 __decorate([
-    typeorm_1.OneToMany((type) => CustomerRepresentatives_1.CustomerRepresentatives, (customerRepresentatives) => customerRepresentatives.customer),
+    typeorm_1.OneToMany((type) => CustomerRepresentatives_1.CustomerRepresentatives, (customerRepresentatives) => customerRepresentatives.customer, {
+        onDelete: 'CASCADE'
+    }),
     __metadata("design:type", Array)
 ], Customers.prototype, "customerRepresentatives", void 0);
 Customers = __decorate([

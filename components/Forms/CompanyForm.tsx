@@ -58,10 +58,10 @@ export const CompanyForm = ({ children, initialFormData = null }) => {
 
 	const handleSubmit = useCallback(
 		(formData) => {
-			console.log(initialFormData.id_customer);
-			const action = !!initialFormData.id_customer
-				? axios.put('/api/customers/' + initialFormData.id_customer, formData)
-				: axios.post('/api/customers', formData);
+			const action =
+				initialFormData && initialFormData.id_customer
+					? axios.put('/api/customers/' + initialFormData.id_customer, formData)
+					: axios.post('/api/customers', formData);
 
 			return action.then(() => {
 				getCustomers(dispatch);

@@ -8,7 +8,7 @@ import { setCurrentUser } from '../../redux/actions';
 import { Loader, Segment } from 'semantic-ui-react';
 import { getUser } from '../../actions';
 
-const withAppLayout = () => (ComposedComponent) => {
+const dataLayout = () => (ComposedComponent) => {
 	const AppLayout = (props) => {
 		const { pathname } = useRouter();
 		const [ loading, setLoading ] = useState(true);
@@ -39,4 +39,4 @@ const withAppLayout = () => (ComposedComponent) => {
 	return AppLayout;
 };
 
-export default withAppLayout;
+export default dataLayout;

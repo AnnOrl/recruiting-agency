@@ -1,0 +1,34 @@
+@media print {
+	.body,
+	.ui.modal > .actions,
+	.close.icon {
+		display: none;
+	}
+	.ui.page.modals {
+		align-items: flex-start;
+		justify-content: flex-start;
+	}
+
+	.ui.modal {
+		width: 80%;
+		box-shadow: none;
+	}
+
+	.ui.small.modal > .header {
+		border: none;
+	}
+
+	.ui.celled.table tr td {
+		border: none;
+		padding-top: 0;
+	}
+
+	.ui.horizontal.label {
+		background: none;
+		font-size: 14px;
+	}
+}
+
+.flexable {
+	display: flex;
+}

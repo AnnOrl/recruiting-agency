@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import withAppLayout from '../components/AppLayout/Layout';
+import dataLayout from '../components/Layouts/DataLayout';
 import { LoginForm } from '../components/Forms/LoginForm';
 import { useRouter } from 'next/router';
 import { setCurrentUser } from '../redux/actions';

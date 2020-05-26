@@ -75,7 +75,7 @@ app
 
 		initLogin(server);
 		initUsers(server, connection.getRepository(Users));
-		initCustomers(server, connection.getRepository(Customers));
+		initCustomers(server, connection.getRepository(Customers), connection.getRepository(CustomerRepresentatives));
 
 		server.all('/', passport.redirectMiddleware, (req, res) => handle(req, res));
 		server.all('/login', (req, res) => handle(req, res));

@@ -1,6 +1,6 @@
 import React from 'react';
-import withAppLayout from '../components/AppLayout/Layout';
+import dataLayout from '../components/Layouts/DataLayout';
 
 const Home = () => <div>Home</div>;
 
-export default withAppLayout()(Home);
+export default dataLayout()(Home);

@@ -12,9 +12,11 @@ class WrappedApp extends App<AppInitialProps> {
 					<title>Подбор персонала</title>
 					<link rel="icon" href="/icon.ico" />
 					<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" />
+					<link rel="stylesheet" href="/styles.css" />
 				</Head>
-
-				<Component {...pageProps} />
+				<div className="body">
+					<Component {...pageProps} />
+				</div>
 			</div>
 		);
 	}

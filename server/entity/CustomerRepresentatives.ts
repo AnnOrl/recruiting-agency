@@ -16,6 +16,14 @@ export class CustomerRepresentatives extends BaseEntity {
 	})
 	phone?: string;
 
-	@ManyToOne((type) => Customers, (customer) => customer.customerRepresentatives)
+	@Column({
+		length: 255,
+		nullable: true
+	})
+	email?: string;
+
+	@ManyToOne((type) => Customers, (customer) => customer.customerRepresentatives, {
+		onDelete: 'CASCADE'
+	})
 	customer: Customers;
 }

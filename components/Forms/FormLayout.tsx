@@ -11,8 +11,14 @@ export const FormLayout = ({ fields, onSubmit, error: errorProps = defaultError,
 		return {
 			...acc,
 			...childFields
-				? childFields.reduce((accChild, { name }) => ({ ...accChild, [name]: initialFormData[name] || '' }), {})
-				: { [name]: initialFormData[name] || '' }
+				? childFields.reduce(
+						(accChild, { name }) => ({
+							...accChild,
+							[name]: (initialFormData && initialFormData[name]) || ''
+						}),
+						{}
+					)
+				: { [name]: (initialFormData && initialFormData[name]) || '' }
 		};
 	}, {});
 

@@ -1,7 +1,9 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { Icon, Pagination, Button, Table, Container, Popup } from 'semantic-ui-react';
-import withAppLayout from '../components/AppLayout/Layout';
+import dataLayout from '../components/Layouts/DataLayout';
 import { CompanyForm } from '../components/Forms/CompanyForm';
+import { ContactsForm } from '../components/Forms/ContactsForm';
+import { CompanyCard } from '../components/Cards/CompanyCard';
 import { getCustomers } from '../actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { Roles } from '../const';
@@ -62,10 +64,18 @@ const Customers = () => {
 									<Table.Cell>{comments}</Table.Cell>
 									<Table.Cell>
 										<div style={{ display: 'flex' }}>
-											<Popup
-												content={'Контактные лица'}
-												trigger={<Button circular icon="address card outline" />}
-											/>
+											<CompanyCard initialFormData={customer}>
+												<Popup
+													content={'Карточка организации'}
+													trigger={<Button circular icon="address card outline" />}
+												/>
+											</CompanyCard>
+											<ContactsForm customer={customer}>
+												<Popup
+													content={'Контакты'}
+													trigger={<Button circular icon="address book" />}
+												/>
+											</ContactsForm>
 											<Popup
 												content={'Вакансии'}
 												trigger={<Button circular icon="list alternate outline" />}
@@ -106,4 +116,4 @@ const Customers = () => {
 };
 
 Customers.actions = [ getCustomers ];
-export default withAppLayout()(Customers);
+export default dataLayout()(Customers);

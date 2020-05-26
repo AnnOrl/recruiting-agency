@@ -76,6 +76,8 @@ export class Customers extends BaseEntity {
 	})
 	comments?: string;
 
-	@OneToMany((type) => CustomerRepresentatives, (customerRepresentatives) => customerRepresentatives.customer)
+	@OneToMany((type) => CustomerRepresentatives, (customerRepresentatives) => customerRepresentatives.customer, {
+		onDelete: 'CASCADE'
+	})
 	customerRepresentatives: CustomerRepresentatives[];
 }
