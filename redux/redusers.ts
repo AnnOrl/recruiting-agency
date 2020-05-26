@@ -7,6 +7,11 @@ const redusers = (state = {}, action) => {
 				...state,
 				user: action.user
 			};
+		case actionTypes.CUSTOMERS:
+			return {
+				...state,
+				customers: action.customers
+			};
 		default:
 			return state;
 	}

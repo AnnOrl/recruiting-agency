@@ -15,10 +15,13 @@ const cookie_session_1 = __importDefault(require("cookie-session"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const next_1 = __importDefault(require("next"));
 const Users_1 = require("./entity/Users");
+const Customers_1 = require("./entity/Customers");
+const CustomerRepresentatives_1 = require("./entity/CustomerRepresentatives");
 const config_1 = require("./config");
 const authentication_1 = require("./auth/authentication");
 const users_1 = require("./routes/users");
 const login_1 = require("./routes/login");
+const customers_1 = require("./routes/customers");
 const redisClient = redis_1.default.createClient();
 const RedisStore = connect_redis_1.default(express_session_1.default);
 const dev = process.env.NODE_ENV !== 'production';
@@ -36,7 +39,7 @@ app
     database: 'recruting_agency',
     synchronize: true,
     logging: false,
-    entities: [Users_1.Users]
+    entities: [Users_1.Users, Customers_1.Customers, CustomerRepresentatives_1.CustomerRepresentatives]
 }))
     .then((connection) => {
     // create and setup express app
@@ -64,6 +67,7 @@ app
     server.use(passport_1.default.session());
     login_1.initLogin(server);
     users_1.initUsers(server, connection.getRepository(Users_1.Users));
+    customers_1.initCustomers(server, connection.getRepository(Customers_1.Customers));
     server.all('/', passport_1.default.redirectMiddleware, (req, res) => handle(req, res));
     server.all('/login', (req, res) => handle(req, res));
     server.all('*', (req, res) => {

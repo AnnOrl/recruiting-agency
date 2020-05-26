@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import withAppLayout from '../components/AppLayout/Layout';
-import { RegisterForm } from '../components/LoginForm/RegisterForm';
+import { RegisterForm } from '../components/Forms/RegisterForm';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 

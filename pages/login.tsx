@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import withAppLayout from '../components/AppLayout/Layout';
-import { LoginForm } from '../components/LoginForm/LoginForm';
+import { LoginForm } from '../components/Forms/LoginForm';
 import { useRouter } from 'next/router';
 import { setCurrentUser } from '../redux/actions';
 import { useSelector, useDispatch } from 'react-redux';

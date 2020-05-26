@@ -6,24 +6,19 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { setCurrentUser } from '../../redux/actions';
 import { Loader, Segment } from 'semantic-ui-react';
+import { getUser } from '../../actions';
 
 const withAppLayout = () => (ComposedComponent) => {
 	const AppLayout = (props) => {
 		const { pathname } = useRouter();
 		const [ loading, setLoading ] = useState(true);
-		const { user } = useSelector((store) => store);
+		const store = useSelector((store) => store);
 		const dispatch = useDispatch();
-
-		const getUser = useCallback(
-			() =>
-				!user
-					? axios.get('/api/users-current').then(({ data }) => dispatch(setCurrentUser(data.user)))
-					: Promise.resolve(),
-			[]
-		);
-
 		useEffect(() => {
-			Promise.all([ getUser() ]).then(() => {
+			Promise.all([
+				getUser(dispatch, store),
+				...(ComposedComponent.actions ? ComposedComponent.actions.map((action) => action(dispatch, store)) : [])
+			]).then(() => {
 				setLoading(false);
 			});
 		}, []);

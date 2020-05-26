@@ -10,10 +10,13 @@ import cookieSession from 'cookie-session';
 import cookieParser from 'cookie-parser';
 import next from 'next';
 import { Users } from './entity/Users';
+import { Customers } from './entity/Customers';
+import { CustomerRepresentatives } from './entity/CustomerRepresentatives';
 import { config } from './config';
 import { initPassport } from './auth/authentication';
 import { initUsers } from './routes/users';
 import { initLogin } from './routes/login';
+import { initCustomers } from './routes/customers';
 
 const redisClient = redis.createClient();
 const RedisStore = connectRedis(session);
@@ -34,7 +37,7 @@ app
 			database: 'recruting_agency',
 			synchronize: true,
 			logging: false,
-			entities: [ Users ]
+			entities: [ Users, Customers, CustomerRepresentatives ]
 		})
 	)
 	.then((connection) => {
@@ -72,6 +75,8 @@ app
 
 		initLogin(server);
 		initUsers(server, connection.getRepository(Users));
+		initCustomers(server, connection.getRepository(Customers));
+
 		server.all('/', passport.redirectMiddleware, (req, res) => handle(req, res));
 		server.all('/login', (req, res) => handle(req, res));
 		server.all('*', (req, res) => {
