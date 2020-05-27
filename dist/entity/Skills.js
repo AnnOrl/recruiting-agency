@@ -10,42 +10,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
-const Customers_1 = require("./Customers");
-let CustomerRepresentatives = class CustomerRepresentatives extends typeorm_1.BaseEntity {
+const SeekersSkills_1 = require("./SeekersSkills");
+const JobSkills_1 = require("./JobSkills");
+let Skills = class Skills extends typeorm_1.BaseEntity {
 };
 __decorate([
     typeorm_1.PrimaryGeneratedColumn(),
     __metadata("design:type", Number)
-], CustomerRepresentatives.prototype, "id_customer_representatives", void 0);
+], Skills.prototype, "id_skill", void 0);
 __decorate([
     typeorm_1.Column({
         length: 45
     }),
     __metadata("design:type", String)
-], CustomerRepresentatives.prototype, "name", void 0);
+], Skills.prototype, "name", void 0);
 __decorate([
-    typeorm_1.Column({
-        length: 45,
-        nullable: true
-    }),
-    __metadata("design:type", String)
-], CustomerRepresentatives.prototype, "phone", void 0);
-__decorate([
-    typeorm_1.Column({
-        length: 255,
-        nullable: true
-    }),
-    __metadata("design:type", String)
-], CustomerRepresentatives.prototype, "email", void 0);
-__decorate([
-    typeorm_1.ManyToOne((type) => Customers_1.Customers, (customer) => customer.customerRepresentatives, {
+    typeorm_1.OneToMany((type) => SeekersSkills_1.SeekersSkills, (seekersSkills) => seekersSkills.skill, {
         onDelete: 'CASCADE'
     }),
-    typeorm_1.JoinColumn({ name: 'id_customer' }),
-    __metadata("design:type", Customers_1.Customers)
-], CustomerRepresentatives.prototype, "customer", void 0);
-CustomerRepresentatives = __decorate([
-    typeorm_1.Entity({ name: 'customer_representatives' })
-], CustomerRepresentatives);
-exports.CustomerRepresentatives = CustomerRepresentatives;
-//# sourceMappingURL=CustomerRepresentatives.js.map
+    __metadata("design:type", Array)
+], Skills.prototype, "seekersSkills", void 0);
+__decorate([
+    typeorm_1.OneToMany((type) => JobSkills_1.JobSkills, (jobSkills) => jobSkills.skill, {
+        onDelete: 'CASCADE'
+    }),
+    __metadata("design:type", Array)
+], Skills.prototype, "jobSkills", void 0);
+Skills = __decorate([
+    typeorm_1.Entity({ name: 'skills' })
+], Skills);
+exports.Skills = Skills;
+//# sourceMappingURL=Skills.js.map

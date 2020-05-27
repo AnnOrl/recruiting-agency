@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToMany, JoinColumn } from 'typeorm';
 import { CustomerRepresentatives } from './CustomerRepresentatives';
+import { Jobs } from './Jobs';
 
 @Entity({ name: 'customers' })
 export class Customers extends BaseEntity {
@@ -80,4 +81,9 @@ export class Customers extends BaseEntity {
 		onDelete: 'CASCADE'
 	})
 	customerRepresentatives: CustomerRepresentatives[];
+
+	@OneToMany((type) => Jobs, (jobs) => jobs.customer, {
+		onDelete: 'CASCADE'
+	})
+	jobs: Jobs[];
 }

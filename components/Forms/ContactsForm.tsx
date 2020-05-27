@@ -11,7 +11,7 @@ const fields = [
 	{ name: 'name', label: 'Контактное лицо' },
 	{ name: 'phone', label: 'Телефон' },
 	{ name: 'email', label: 'Электронная почта' },
-	{ name: 'action', label: '', collapsing: true }
+	{ name: 'action', label: '', collapsing: true, className: 'table-actions' }
 ];
 
 export const ContactsForm = ({ children, customer }) => {
@@ -39,7 +39,13 @@ export const ContactsForm = ({ children, customer }) => {
 	}, []);
 
 	return (
-		<Modal trigger={<div onClick={toggleModal}>{children}</div>} closeIcon open={modalOpened} onClose={toggleModal}>
+		<Modal
+			trigger={<div onClick={toggleModal}>{children}</div>}
+			closeIcon
+			open={modalOpened}
+			onClose={toggleModal}
+			className="contact-modal"
+		>
 			<Modal.Header>Контакты организации: {customer.name}</Modal.Header>
 			<Modal.Content>
 				{customer.customerRepresentatives && customer.customerRepresentatives.length ? (
@@ -62,7 +68,7 @@ export const ContactsForm = ({ children, customer }) => {
 									<Table.Cell>{name}</Table.Cell>
 									<Table.Cell>{phone}</Table.Cell>
 									<Table.Cell>{email}</Table.Cell>
-									<Table.Cell>
+									<Table.Cell className="table-actions">
 										<div className="flexable">
 											<ModalContactsForm initialFormData={customerRepresentative}>
 												<Popup

@@ -10,42 +10,42 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
-const Customers_1 = require("./Customers");
-let CustomerRepresentatives = class CustomerRepresentatives extends typeorm_1.BaseEntity {
+const Meetings_1 = require("./Meetings");
+const Recruiters_1 = require("./Recruiters");
+let Calendar = class Calendar extends typeorm_1.BaseEntity {
 };
 __decorate([
     typeorm_1.PrimaryGeneratedColumn(),
     __metadata("design:type", Number)
-], CustomerRepresentatives.prototype, "id_customer_representatives", void 0);
+], Calendar.prototype, "id_calendar", void 0);
 __decorate([
     typeorm_1.Column({
         length: 45
     }),
     __metadata("design:type", String)
-], CustomerRepresentatives.prototype, "name", void 0);
+], Calendar.prototype, "date", void 0);
 __decorate([
     typeorm_1.Column({
-        length: 45,
-        nullable: true
+        length: 200
     }),
     __metadata("design:type", String)
-], CustomerRepresentatives.prototype, "phone", void 0);
+], Calendar.prototype, "description", void 0);
 __decorate([
-    typeorm_1.Column({
-        length: 255,
-        nullable: true
-    }),
-    __metadata("design:type", String)
-], CustomerRepresentatives.prototype, "email", void 0);
-__decorate([
-    typeorm_1.ManyToOne((type) => Customers_1.Customers, (customer) => customer.customerRepresentatives, {
+    typeorm_1.ManyToOne((type) => Meetings_1.Meetings, (meeting) => meeting.calendar, {
         onDelete: 'CASCADE'
     }),
-    typeorm_1.JoinColumn({ name: 'id_customer' }),
-    __metadata("design:type", Customers_1.Customers)
-], CustomerRepresentatives.prototype, "customer", void 0);
-CustomerRepresentatives = __decorate([
-    typeorm_1.Entity({ name: 'customer_representatives' })
-], CustomerRepresentatives);
-exports.CustomerRepresentatives = CustomerRepresentatives;
-//# sourceMappingURL=CustomerRepresentatives.js.map
+    typeorm_1.JoinColumn({ name: 'id_meeting' }),
+    __metadata("design:type", Meetings_1.Meetings)
+], Calendar.prototype, "meeting", void 0);
+__decorate([
+    typeorm_1.ManyToOne((type) => Recruiters_1.Recruiters, (recruiters) => recruiters.calendar, {
+        onDelete: 'CASCADE'
+    }),
+    typeorm_1.JoinColumn({ name: 'id_recruiter' }),
+    __metadata("design:type", Recruiters_1.Recruiters)
+], Calendar.prototype, "recruiter", void 0);
+Calendar = __decorate([
+    typeorm_1.Entity({ name: 'calendar' })
+], Calendar);
+exports.Calendar = Calendar;
+//# sourceMappingURL=Calendar.js.map

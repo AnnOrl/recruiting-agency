@@ -50,6 +50,7 @@ export const CompanyCard = ({ children, initialFormData }) => {
 			closeIcon
 			open={modalOpened}
 			onClose={toggleModal}
+			className="company-modal"
 			size="small"
 		>
 			<Modal.Header>Карточка организации: {initialFormData[data.header]}</Modal.Header>

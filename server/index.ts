@@ -1,22 +1,40 @@
-import 'reflect-metadata';
-import passport from 'passport';
+import bodyParser from 'body-parser';
+import connectRedis from 'connect-redis';
+import cookieParser from 'cookie-parser';
+import cookieSession from 'cookie-session';
 import express from 'express';
 import session from 'express-session';
-import bodyParser from 'body-parser';
-import { createConnection } from 'typeorm';
-import redis from 'redis';
-import connectRedis from 'connect-redis';
-import cookieSession from 'cookie-session';
-import cookieParser from 'cookie-parser';
 import next from 'next';
-import { Users } from './entity/Users';
-import { Customers } from './entity/Customers';
-import { CustomerRepresentatives } from './entity/CustomerRepresentatives';
-import { config } from './config';
+import passport from 'passport';
+import redis from 'redis';
+import 'reflect-metadata';
+import { createConnection } from 'typeorm';
 import { initPassport } from './auth/authentication';
-import { initUsers } from './routes/users';
-import { initLogin } from './routes/login';
-import { initCustomers } from './routes/customers';
+import { config } from './config';
+import {
+	AssessmentResponses,
+	CustomerRepresentatives,
+	Customers,
+	Grades,
+	Interviews,
+	InterviewStage,
+	InterviewStageStatuses,
+	Jobs,
+	JobSeekers,
+	Meetings,
+	Questions,
+	QuestionsCategory,
+	QuestionsSubCategory,
+	Recruiters,
+	RolesRecruiter,
+	SeekersSkills,
+	SetQuestions,
+	Skills,
+	Users,
+	JobSkills,
+	Calendar
+} from './entity';
+import { initRoutes } from './routes';
 
 const redisClient = redis.createClient();
 const RedisStore = connectRedis(session);
@@ -37,7 +55,29 @@ app
 			database: 'recruting_agency',
 			synchronize: true,
 			logging: false,
-			entities: [ Users, Customers, CustomerRepresentatives ]
+			entities: [
+				Users,
+				Customers,
+				CustomerRepresentatives,
+				Jobs,
+				Recruiters,
+				RolesRecruiter,
+				Grades,
+				Interviews,
+				InterviewStage,
+				InterviewStageStatuses,
+				JobSeekers,
+				SeekersSkills,
+				Skills,
+				AssessmentResponses,
+				Meetings,
+				Questions,
+				QuestionsCategory,
+				QuestionsSubCategory,
+				SetQuestions,
+				JobSkills,
+				Calendar
+			]
 		})
 	)
 	.then((connection) => {
@@ -73,9 +113,7 @@ app
 		server.use(passport.initialize());
 		server.use(passport.session());
 
-		initLogin(server);
-		initUsers(server, connection.getRepository(Users));
-		initCustomers(server, connection.getRepository(Customers), connection.getRepository(CustomerRepresentatives));
+		initRoutes(server, connection);
 
 		server.all('/', passport.redirectMiddleware, (req, res) => handle(req, res));
 		server.all('/login', (req, res) => handle(req, res));

@@ -3,25 +3,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-require("reflect-metadata");
-const passport_1 = __importDefault(require("passport"));
+const body_parser_1 = __importDefault(require("body-parser"));
+const connect_redis_1 = __importDefault(require("connect-redis"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const cookie_session_1 = __importDefault(require("cookie-session"));
 const express_1 = __importDefault(require("express"));
 const express_session_1 = __importDefault(require("express-session"));
-const body_parser_1 = __importDefault(require("body-parser"));
-const typeorm_1 = require("typeorm");
-const redis_1 = __importDefault(require("redis"));
-const connect_redis_1 = __importDefault(require("connect-redis"));
-const cookie_session_1 = __importDefault(require("cookie-session"));
-const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const next_1 = __importDefault(require("next"));
-const Users_1 = require("./entity/Users");
-const Customers_1 = require("./entity/Customers");
-const CustomerRepresentatives_1 = require("./entity/CustomerRepresentatives");
-const config_1 = require("./config");
+const passport_1 = __importDefault(require("passport"));
+const redis_1 = __importDefault(require("redis"));
+require("reflect-metadata");
+const typeorm_1 = require("typeorm");
 const authentication_1 = require("./auth/authentication");
-const users_1 = require("./routes/users");
-const login_1 = require("./routes/login");
-const customers_1 = require("./routes/customers");
+const config_1 = require("./config");
+const entity_1 = require("./entity");
+const routes_1 = require("./routes");
 const redisClient = redis_1.default.createClient();
 const RedisStore = connect_redis_1.default(express_session_1.default);
 const dev = process.env.NODE_ENV !== 'production';
@@ -39,7 +35,29 @@ app
     database: 'recruting_agency',
     synchronize: true,
     logging: false,
-    entities: [Users_1.Users, Customers_1.Customers, CustomerRepresentatives_1.CustomerRepresentatives]
+    entities: [
+        entity_1.Users,
+        entity_1.Customers,
+        entity_1.CustomerRepresentatives,
+        entity_1.Jobs,
+        entity_1.Recruiters,
+        entity_1.RolesRecruiter,
+        entity_1.Grades,
+        entity_1.Interviews,
+        entity_1.InterviewStage,
+        entity_1.InterviewStageStatuses,
+        entity_1.JobSeekers,
+        entity_1.SeekersSkills,
+        entity_1.Skills,
+        entity_1.AssessmentResponses,
+        entity_1.Meetings,
+        entity_1.Questions,
+        entity_1.QuestionsCategory,
+        entity_1.QuestionsSubCategory,
+        entity_1.SetQuestions,
+        entity_1.JobSkills,
+        entity_1.Calendar
+    ]
 }))
     .then((connection) => {
     // create and setup express app
@@ -65,9 +83,7 @@ app
     }));
     server.use(passport_1.default.initialize());
     server.use(passport_1.default.session());
-    login_1.initLogin(server);
-    users_1.initUsers(server, connection.getRepository(Users_1.Users));
-    customers_1.initCustomers(server, connection.getRepository(Customers_1.Customers), connection.getRepository(CustomerRepresentatives_1.CustomerRepresentatives));
+    routes_1.initRoutes(server, connection);
     server.all('/', passport_1.default.redirectMiddleware, (req, res) => handle(req, res));
     server.all('/login', (req, res) => handle(req, res));
     server.all('*', (req, res) => {

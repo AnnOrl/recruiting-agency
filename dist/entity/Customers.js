@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
 const CustomerRepresentatives_1 = require("./CustomerRepresentatives");
+const Jobs_1 = require("./Jobs");
 let Customers = class Customers extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -106,6 +107,12 @@ __decorate([
     }),
     __metadata("design:type", Array)
 ], Customers.prototype, "customerRepresentatives", void 0);
+__decorate([
+    typeorm_1.OneToMany((type) => Jobs_1.Jobs, (jobs) => jobs.customer, {
+        onDelete: 'CASCADE'
+    }),
+    __metadata("design:type", Array)
+], Customers.prototype, "jobs", void 0);
 Customers = __decorate([
     typeorm_1.Entity({ name: 'customers' })
 ], Customers);

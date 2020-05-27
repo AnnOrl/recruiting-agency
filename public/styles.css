@@ -18,7 +18,7 @@
 		border: none;
 	}
 
-	.ui.celled.table tr td {
+	.company-modal .ui.celled.table tr td {
 		border: none;
 		padding-top: 0;
 	}
@@ -26,6 +26,18 @@
 	.ui.horizontal.label {
 		background: none;
 		font-size: 14px;
+	}
+
+	.table-actions {
+		display: none;
+	}
+
+	.ui.modal > .header {
+		border: none;
+	}
+
+	.ui.modal.contact-modal {
+		width: 100%;
 	}
 }
 

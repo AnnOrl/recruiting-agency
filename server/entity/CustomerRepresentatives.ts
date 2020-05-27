@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne, JoinColumn } from 'typeorm';
 import { Customers } from './Customers';
 
 @Entity({ name: 'customer_representatives' })
@@ -25,5 +25,6 @@ export class CustomerRepresentatives extends BaseEntity {
 	@ManyToOne((type) => Customers, (customer) => customer.customerRepresentatives, {
 		onDelete: 'CASCADE'
 	})
+	@JoinColumn({ name: 'id_customer' })
 	customer: Customers;
 }
