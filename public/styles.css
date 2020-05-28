@@ -44,3 +44,29 @@
 .flexable {
 	display: flex;
 }
+
+.tags {
+	text-align: center;
+}
+
+.tags .label {
+	margin-bottom: 5px;
+}
+
+.ui.sortable.table thead th.break-space,
+.ui.sortable.table thead th.sorted.break-space {
+	white-space: normal;
+}
+
+.list-home {
+	padding-left: 20px;
+	padding-right: 20px;
+	text-align: center;
+}
+
+.ui.segment.item-home {
+	display: inline-block;
+	max-width: 300px;
+	width: calc(100% - 30px);
+	margin-left: 10px;
+}

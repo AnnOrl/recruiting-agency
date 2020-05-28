@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToOne, JoinColumn } from 'typeorm';
+import { Recruiters } from './Recruiters';
 
 @Entity()
 export class Users extends BaseEntity {
@@ -26,4 +27,10 @@ export class Users extends BaseEntity {
 	name: string;
 
 	@Column() role: number;
+
+	@OneToOne((type) => Recruiters, (recruiters) => recruiters.user, {
+		onDelete: 'CASCADE'
+	})
+	@JoinColumn({ name: 'id_recruiters' })
+	recruiter: Recruiters;
 }

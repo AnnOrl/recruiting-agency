@@ -17,7 +17,7 @@ const typeorm_1 = require("typeorm");
 const authentication_1 = require("./auth/authentication");
 const config_1 = require("./config");
 const entity_1 = require("./entity");
-const routes_1 = require("./routes");
+const controllers_1 = require("./controllers");
 const redisClient = redis_1.default.createClient();
 const RedisStore = connect_redis_1.default(express_session_1.default);
 const dev = process.env.NODE_ENV !== 'production';
@@ -83,7 +83,7 @@ app
     }));
     server.use(passport_1.default.initialize());
     server.use(passport_1.default.session());
-    routes_1.initRoutes(server, connection);
+    controllers_1.initRoutes(server, connection);
     server.all('/', passport_1.default.redirectMiddleware, (req, res) => handle(req, res));
     server.all('/login', (req, res) => handle(req, res));
     server.all('*', (req, res) => {

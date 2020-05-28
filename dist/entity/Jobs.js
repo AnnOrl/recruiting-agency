@@ -15,12 +15,13 @@ const Grades_1 = require("./Grades");
 const Recruiters_1 = require("./Recruiters");
 const Interviews_1 = require("./Interviews");
 const JobSkills_1 = require("./JobSkills");
+const CustomerRepresentatives_1 = require("./CustomerRepresentatives");
 let Jobs = class Jobs extends typeorm_1.BaseEntity {
 };
 __decorate([
     typeorm_1.PrimaryGeneratedColumn(),
     __metadata("design:type", Number)
-], Jobs.prototype, "id_customer_representatives", void 0);
+], Jobs.prototype, "id_job", void 0);
 __decorate([
     typeorm_1.Column({
         length: 45
@@ -34,6 +35,13 @@ __decorate([
     typeorm_1.JoinColumn({ name: 'id_customer' }),
     __metadata("design:type", Customers_1.Customers)
 ], Jobs.prototype, "customer", void 0);
+__decorate([
+    typeorm_1.ManyToOne((type) => CustomerRepresentatives_1.CustomerRepresentatives, (customerRepresentatives) => customerRepresentatives.jobs, {
+        onDelete: 'CASCADE'
+    }),
+    typeorm_1.JoinColumn({ name: 'id_customer_representatives' }),
+    __metadata("design:type", CustomerRepresentatives_1.CustomerRepresentatives)
+], Jobs.prototype, "customerRepresentatives", void 0);
 __decorate([
     typeorm_1.ManyToOne((type) => Grades_1.Grades, (grade) => grade.jobs, {
         onDelete: 'CASCADE'

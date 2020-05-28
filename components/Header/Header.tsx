@@ -10,7 +10,6 @@ import { useSelector, useDispatch } from 'react-redux';
 const menu = [
 	{ link: '/', name: 'В работе' },
 	{ link: '/meetings', name: 'Встречи' },
-	{ link: '/calendar', name: 'Календарь' },
 	{ link: '/seekers', name: 'Соискатели' },
 	{ link: '/jobs', name: 'Вакансии' },
 	{ link: '/customers', name: 'Клиенты', role: Roles.FULL },

@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
 const Customers_1 = require("./Customers");
+const Jobs_1 = require("./Jobs");
 let CustomerRepresentatives = class CustomerRepresentatives extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -44,6 +45,12 @@ __decorate([
     typeorm_1.JoinColumn({ name: 'id_customer' }),
     __metadata("design:type", Customers_1.Customers)
 ], CustomerRepresentatives.prototype, "customer", void 0);
+__decorate([
+    typeorm_1.OneToMany((type) => Jobs_1.Jobs, (jobs) => jobs.customerRepresentatives, {
+        onDelete: 'CASCADE'
+    }),
+    __metadata("design:type", Array)
+], CustomerRepresentatives.prototype, "jobs", void 0);
 CustomerRepresentatives = __decorate([
     typeorm_1.Entity({ name: 'customer_representatives' })
 ], CustomerRepresentatives);

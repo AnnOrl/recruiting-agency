@@ -1,7 +1,17 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
-import { Interviews } from './Interviews';
-import { SeekersSkills } from './SeekersSkills';
+import {
+	Entity,
+	Column,
+	PrimaryGeneratedColumn,
+	BaseEntity,
+	OneToMany,
+	ManyToOne,
+	JoinColumn,
+	ManyToMany
+} from 'typeorm';
+import { Skills } from './Skills';
 import { Grades } from './Grades';
+import { Interviews } from './Interviews';
+import { Meetings } from './Meetings';
 
 @Entity({ name: 'job_seekers' })
 export class JobSeekers extends BaseEntity {
@@ -22,7 +32,8 @@ export class JobSeekers extends BaseEntity {
 	})
 	email: string;
 
-	@Column() cv: string;
+	@Column({ type: 'longblob' })
+	cv;
 
 	@ManyToOne((type) => Grades, (grades) => grades.jobSeekersConfirmed, {
 		onDelete: 'CASCADE'
@@ -36,8 +47,16 @@ export class JobSeekers extends BaseEntity {
 	@JoinColumn({ name: 'id_prev_grade' })
 	prevGrade: Grades;
 
-	@OneToMany((type) => SeekersSkills, (seekersSkills) => seekersSkills.jobSeekers, {
+	@ManyToMany((type) => Skills, (skills) => skills.seekers)
+	@JoinColumn({ name: 'id_job_seekers' })
+	skills: Skills[];
+
+	@ManyToMany((type) => Interviews, (interviews) => interviews.seekers)
+	@JoinColumn({ name: 'id_job_seekers' })
+	interviews: Interviews[];
+
+	@OneToMany((type) => Meetings, (meetings) => meetings.jobSeeker, {
 		onDelete: 'CASCADE'
 	})
-	skills: SeekersSkills[];
+	meetings: Meetings[];
 }

@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Customers } from './Customers';
+import { Jobs } from './Jobs';
 
 @Entity({ name: 'customer_representatives' })
 export class CustomerRepresentatives extends BaseEntity {
@@ -27,4 +28,9 @@ export class CustomerRepresentatives extends BaseEntity {
 	})
 	@JoinColumn({ name: 'id_customer' })
 	customer: Customers;
+
+	@OneToMany((type) => Jobs, (jobs) => jobs.customerRepresentatives, {
+		onDelete: 'CASCADE'
+	})
+	jobs: Jobs[];
 }

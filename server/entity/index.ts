@@ -9,7 +9,6 @@ import { JobSeekers } from './JobSeekers';
 import { Recruiters } from './Recruiters';
 import { RolesRecruiter } from './RolesRecruiter';
 import { Users } from './Users';
-import { SeekersSkills } from './SeekersSkills';
 import { Skills } from './Skills';
 import { AssessmentResponses } from './AssessmentResponses';
 import { Meetings } from './Meetings';
@@ -17,7 +16,6 @@ import { Questions } from './Questions';
 import { QuestionsCategory } from './QuestionsCategory';
 import { QuestionsSubCategory } from './QuestionsSubCategory';
 import { SetQuestions } from './SetQuestions';
-import { JobSkills } from './JobSkills';
 import { Calendar } from './Calendar';
 
 export {
@@ -32,7 +30,6 @@ export {
 	InterviewStage,
 	InterviewStageStatuses,
 	JobSeekers,
-	SeekersSkills,
 	Skills,
 	AssessmentResponses,
 	Meetings,
@@ -40,6 +37,5 @@ export {
 	QuestionsCategory,
 	QuestionsSubCategory,
 	SetQuestions,
-	JobSkills,
 	Calendar
 };

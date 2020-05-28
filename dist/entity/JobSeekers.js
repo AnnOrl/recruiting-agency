@@ -37,8 +37,8 @@ __decorate([
     __metadata("design:type", String)
 ], JobSeekers.prototype, "email", void 0);
 __decorate([
-    typeorm_1.Column(),
-    __metadata("design:type", String)
+    typeorm_1.Column({ type: 'longblob' }),
+    __metadata("design:type", Object)
 ], JobSeekers.prototype, "cv", void 0);
 __decorate([
     typeorm_1.ManyToOne((type) => Grades_1.Grades, (grades) => grades.jobSeekersConfirmed, {

@@ -3,9 +3,10 @@ import { Form, Modal, Table, Icon, Label, Button } from 'semantic-ui-react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { getCustomers } from '../../actions';
+import { CardLayout } from '../Layouts/CardLayout';
 
 const data = {
-	header: 'name',
+	header: { name: 'name', headerRender: (value) => `Карточка организации: ${value}` },
 	items: [
 		{ name: 'mailing_address', label: 'Почтовый адрес' },
 		{ name: 'actual_address', label: 'Фактический адрес' },
@@ -25,57 +26,13 @@ const data = {
 };
 
 export const CompanyCard = ({ children, initialFormData }) => {
-	const [ modalOpened, setModalOpened ] = useState(false);
-	const dispatch = useDispatch();
-	const toggleModal = useCallback(
-		() => {
-			setModalOpened(!modalOpened);
-		},
-		[ modalOpened ]
-	);
 	const handleDelete = useCallback(() => {
-		return axios.delete('/api/customers/' + initialFormData.id_customer).then(() => {
-			getCustomers(dispatch);
-			toggleModal();
-		});
-	}, []);
-
-	const handlePrint = useCallback(() => {
-		window.print();
+		return axios.delete('/api/customers/' + initialFormData.id_customer);
 	}, []);
 
 	return (
-		<Modal
-			trigger={<div onClick={toggleModal}>{children}</div>}
-			closeIcon
-			open={modalOpened}
-			onClose={toggleModal}
-			className="company-modal"
-			size="small"
-		>
-			<Modal.Header>Карточка организации: {initialFormData[data.header]}</Modal.Header>
-			<Modal.Content>
-				<Table basic="very" celled>
-					{data.items.map(({ name, label }) => (
-						<Table.Row key={name}>
-							<Table.Cell collapsing>
-								<Label horizontal>{label}</Label>
-							</Table.Cell>
-							<Table.Cell> {initialFormData[name]}</Table.Cell>
-						</Table.Row>
-					))}
-				</Table>
-			</Modal.Content>
-			<Modal.Actions>
-				<Button labelPosition="right" icon onClick={handleDelete} color="red">
-					<Icon name="delete" />
-					Удалить организацию
-				</Button>
-				<Button labelPosition="right" icon onClick={handlePrint}>
-					<Icon name="print" />
-					Печать
-				</Button>
-			</Modal.Actions>
-		</Modal>
+		<CardLayout initialFormData={initialFormData} model={data} onDelete={handleDelete}>
+			{children}
+		</CardLayout>
 	);
 };

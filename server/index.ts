@@ -27,14 +27,12 @@ import {
 	QuestionsSubCategory,
 	Recruiters,
 	RolesRecruiter,
-	SeekersSkills,
 	SetQuestions,
 	Skills,
 	Users,
-	JobSkills,
 	Calendar
 } from './entity';
-import { initRoutes } from './routes';
+import { initRoutes } from './controllers';
 
 const redisClient = redis.createClient();
 const RedisStore = connectRedis(session);
@@ -54,7 +52,7 @@ app
 			password: '1111',
 			database: 'recruting_agency',
 			synchronize: true,
-			logging: false,
+			logging: 'all',
 			entities: [
 				Users,
 				Customers,
@@ -67,7 +65,6 @@ app
 				InterviewStage,
 				InterviewStageStatuses,
 				JobSeekers,
-				SeekersSkills,
 				Skills,
 				AssessmentResponses,
 				Meetings,
@@ -75,7 +72,6 @@ app
 				QuestionsCategory,
 				QuestionsSubCategory,
 				SetQuestions,
-				JobSkills,
 				Calendar
 			]
 		})

@@ -13,18 +13,8 @@ const generatePassword = (password) => {
 };
 
 const initUsers = (app: Express, userRepository) => {
-	app.get('/api/users', passport.authenticationMiddleware, async function(req: Request, res: Response) {
-		const users = await userRepository.find();
-		res.json(users);
-	});
-
 	app.get('/api/users-current', passport.authenticationMiddleware, function(req: any, res: Response) {
 		res.json({ user: req.user });
-	});
-
-	app.get('/api/users/:id', passport.authenticationMiddleware, async function(req: Request, res: Response) {
-		const results = await userRepository.findOne(req.params.id);
-		return res.send(results);
 	});
 
 	app.post('/api/users', async function(req: Request, res: Response) {

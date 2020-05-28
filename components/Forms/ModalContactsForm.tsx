@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { getCustomers } from '../../actions';
-import { FormLayout } from './FormLayout';
+import { FormLayout } from '../Layouts/FormLayout';
 
 const fields = [
 	{ Component: Form.Input, name: 'name', label: 'Контактное лицо', params: { required: true } },

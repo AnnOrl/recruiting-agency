@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { getCustomers } from '../../actions';
-import { FormLayout } from './FormLayout';
+import { FormLayout } from '../Layouts/FormLayout';
 import { ModalContactsForm } from './ModalContactsForm';
 
 const fields = [

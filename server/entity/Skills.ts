@@ -1,8 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
-import { Interviews } from './Interviews';
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToMany, ManyToMany, JoinTable } from 'typeorm';
+import { JobSeekers } from './JobSeekers';
 import { Jobs } from './Jobs';
-import { SeekersSkills } from './SeekersSkills';
-import { JobSkills } from './JobSkills';
 
 @Entity({ name: 'skills' })
 export class Skills extends BaseEntity {
@@ -13,13 +11,31 @@ export class Skills extends BaseEntity {
 	})
 	name: string;
 
-	@OneToMany((type) => SeekersSkills, (seekersSkills) => seekersSkills.skill, {
-		onDelete: 'CASCADE'
+	@ManyToMany((type) => Jobs, (jobs) => jobs.skills)
+	@JoinTable({
+		name: 'job_skills',
+		joinColumn: {
+			name: 'id_skills',
+			referencedColumnName: 'id_skill'
+		},
+		inverseJoinColumn: {
+			name: 'id_job',
+			referencedColumnName: 'id_job'
+		}
 	})
-	seekersSkills: SeekersSkills[];
+	jobs: Jobs[];
 
-	@OneToMany((type) => JobSkills, (jobSkills) => jobSkills.skill, {
-		onDelete: 'CASCADE'
+	@ManyToMany((type) => JobSeekers, (jobSeekers) => jobSeekers.skills)
+	@JoinTable({
+		name: 'seekers_skills',
+		joinColumn: {
+			name: 'id_skills',
+			referencedColumnName: 'id_skill'
+		},
+		inverseJoinColumn: {
+			name: 'id_job_seekers',
+			referencedColumnName: 'id_job_seekers'
+		}
 	})
-	jobSkills: JobSkills[];
+	seekers: JobSeekers[];
 }

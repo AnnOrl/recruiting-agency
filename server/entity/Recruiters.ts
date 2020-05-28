@@ -1,8 +1,18 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
+import {
+	Entity,
+	Column,
+	PrimaryGeneratedColumn,
+	BaseEntity,
+	OneToMany,
+	ManyToOne,
+	JoinColumn,
+	OneToOne
+} from 'typeorm';
 import { Interviews } from './Interviews';
 import { Jobs } from './Jobs';
 import { RolesRecruiter } from './RolesRecruiter';
 import { Calendar } from './Calendar';
+import { Users } from './Users';
 
 @Entity({ name: 'recruiters' })
 export class Recruiters extends BaseEntity {
@@ -43,4 +53,9 @@ export class Recruiters extends BaseEntity {
 		onDelete: 'CASCADE'
 	})
 	calendar: Calendar[];
+
+	@OneToOne((type) => Users, (user) => user.recruiter, {
+		onDelete: 'CASCADE'
+	})
+	user: Users;
 }

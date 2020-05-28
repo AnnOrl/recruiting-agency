@@ -12,12 +12,6 @@ export class InterviewStage extends BaseEntity {
 	})
 	stage_name: string;
 
-	@ManyToOne((type) => InterviewStageStatuses, (interviewStageStatuses) => interviewStageStatuses.stages, {
-		onDelete: 'CASCADE'
-	})
-	@JoinColumn({ name: 'id_interview_stage_status' })
-	status: InterviewStageStatuses;
-
 	@OneToMany((type) => Interviews, (interviews) => interviews.stage, {
 		onDelete: 'CASCADE'
 	})
