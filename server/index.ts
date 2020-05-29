@@ -8,30 +8,11 @@ import next from 'next';
 import passport from 'passport';
 import redis from 'redis';
 import 'reflect-metadata';
-import { createConnection } from 'typeorm';
+
 import { initPassport } from './auth/authentication';
 import { config } from './config';
-import {
-	AssessmentResponses,
-	CustomerRepresentatives,
-	Customers,
-	Grades,
-	Interviews,
-	InterviewStage,
-	InterviewStageStatuses,
-	Jobs,
-	JobSeekers,
-	Meetings,
-	Questions,
-	QuestionsCategory,
-	QuestionsSubCategory,
-	Recruiters,
-	RolesRecruiter,
-	SetQuestions,
-	Skills,
-	Users,
-	Calendar
-} from './entity';
+import { initConnection } from './db/connect';
+
 import { initRoutes } from './controllers';
 
 const redisClient = redis.createClient();
@@ -42,40 +23,7 @@ const handle = app.getRequestHandler();
 
 app
 	.prepare()
-	.then(() =>
-		createConnection({
-			name: 'recruting_agency',
-			type: 'mysql',
-			host: '127.0.0.1',
-			port: 3306,
-			username: 'root',
-			password: '1111',
-			database: 'recruting_agency',
-			synchronize: true,
-			logging: 'all',
-			entities: [
-				Users,
-				Customers,
-				CustomerRepresentatives,
-				Jobs,
-				Recruiters,
-				RolesRecruiter,
-				Grades,
-				Interviews,
-				InterviewStage,
-				InterviewStageStatuses,
-				JobSeekers,
-				Skills,
-				AssessmentResponses,
-				Meetings,
-				Questions,
-				QuestionsCategory,
-				QuestionsSubCategory,
-				SetQuestions,
-				Calendar
-			]
-		})
-	)
+	.then(initConnection)
 	.then((connection) => {
 		// create and setup express app
 		const server = express();
